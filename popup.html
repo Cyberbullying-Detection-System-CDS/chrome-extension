@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Facebook Scanner</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        width: 360px;
+        margin: 0;
+        padding: 12px;
+        box-sizing: border-box;
+      }
+
+      h1 {
+        font-size: 16px;
+        margin: 0 0 10px;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      #status {
+        margin-top: 10px;
+        font-size: 12px;
+      }
+
+      #results {
+        margin-top: 10px;
+        max-height: 420px;
+        overflow-y: auto;
+        border-top: 1px solid #ddd;
+        padding-top: 8px;
+      }
+
+      .post {
+        margin-bottom: 14px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .label {
+        font-weight: bold;
+        font-size: 12px;
+      }
+
+      ul {
+        margin: 6px 0;
+        padding-left: 18px;
+      }
+
+      li {
+        font-size: 12px;
+        margin-bottom: 4px;
+        word-break: break-word;
+      }
+
+      .empty {
+        color: #666;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Facebook Scanner</h1>
+    <button id="scanBtn">Auto Scroll + Scan Facebook</button>
+    <div id="status"></div>
+    <div id="results"></div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

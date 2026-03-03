@@ -1,0 +1,4 @@
+facebook-scraper>=0.2.59
+requests>=2.31.0
+# facebook-scraper pulls requests-html which now requires lxml_html_clean
+lxml_html_clean>=0.1.1
