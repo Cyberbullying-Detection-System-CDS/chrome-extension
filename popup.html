@@ -5,72 +5,276 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Facebook Scanner</title>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        width: 360px;
-        margin: 0;
-        padding: 12px;
+      :root {
+        --bg: #f3f6fb;
+        --card: #ffffff;
+        --line: #dbe3ef;
+        --ink: #111827;
+        --muted: #5b6473;
+        --primary: #0f62fe;
+        --primary-ink: #ffffff;
+        --danger: #b42318;
+        --ok: #047857;
+      }
+
+      * {
         box-sizing: border-box;
       }
 
-      h1 {
-        font-size: 16px;
-        margin: 0 0 10px;
+      body {
+        margin: 0;
+        width: 430px;
+        min-height: 560px;
+        background: radial-gradient(circle at top right, #e0ecff 0%, var(--bg) 44%);
+        color: var(--ink);
+        font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
       }
 
-      button {
-        width: 100%;
+      .app {
+        padding: 12px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .title {
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .subtitle {
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 10px;
         padding: 10px;
-        font-size: 14px;
+      }
+
+      .scan-btn {
+        width: 100%;
+        border: 0;
+        border-radius: 8px;
+        padding: 11px 12px;
+        font-weight: 600;
+        font-size: 13px;
+        background: linear-gradient(135deg, #0f62fe, #1f7aff);
+        color: var(--primary-ink);
         cursor: pointer;
       }
 
-      #status {
-        margin-top: 10px;
+      .scan-btn:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+      }
+
+      .status {
+        margin-top: 8px;
+        font-size: 12px;
+        color: #334155;
+      }
+
+      details {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #f9fbff;
+        padding: 8px;
+      }
+
+      summary {
+        cursor: pointer;
+        font-weight: 600;
         font-size: 12px;
       }
 
-      #results {
-        margin-top: 10px;
-        max-height: 420px;
-        overflow-y: auto;
-        border-top: 1px solid #ddd;
+      .settings-grid {
+        margin-top: 8px;
+        display: grid;
+        gap: 8px;
+      }
+
+      .field label {
+        display: block;
+        font-size: 11px;
+        color: var(--muted);
+        margin-bottom: 4px;
+      }
+
+      .field input {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 7px 8px;
+        font-size: 12px;
+        background: #fff;
+      }
+
+      .actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .btn {
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 7px 10px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fff;
+        cursor: pointer;
+      }
+
+      .btn.primary {
+        background: #e6eeff;
+        border-color: #b6ccff;
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .kpi {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 8px;
+        background: #fbfdff;
+      }
+
+      .kpi .k {
+        font-size: 10px;
+        color: var(--muted);
+      }
+
+      .kpi .v {
+        margin-top: 2px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .findings,
+      .posts,
+      .json {
+        max-height: 170px;
+        overflow: auto;
+        margin-top: 8px;
+        border-top: 1px solid var(--line);
         padding-top: 8px;
       }
 
+      .finding {
+        padding: 8px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        margin-bottom: 8px;
+        background: #fff;
+        font-size: 11px;
+      }
+
+      .badge {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 700;
+        border-radius: 999px;
+        padding: 2px 7px;
+      }
+
+      .hit {
+        background: #ffe7e6;
+        color: var(--danger);
+      }
+
+      .safe {
+        background: #e7fff4;
+        color: var(--ok);
+      }
+
       .post {
-        margin-bottom: 14px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #eee;
+        padding: 8px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        margin-bottom: 8px;
+        font-size: 11px;
+        background: #fff;
       }
 
-      .label {
-        font-weight: bold;
-        font-size: 12px;
+      .muted {
+        color: var(--muted);
+        font-size: 11px;
       }
 
-      ul {
-        margin: 6px 0;
-        padding-left: 18px;
-      }
-
-      li {
-        font-size: 12px;
-        margin-bottom: 4px;
+      pre {
+        margin: 0;
+        white-space: pre-wrap;
         word-break: break-word;
-      }
-
-      .empty {
-        color: #666;
-        font-style: italic;
+        font-size: 11px;
       }
     </style>
   </head>
   <body>
-    <h1>Facebook Scanner</h1>
-    <button id="scanBtn">Auto Scroll + Scan Facebook</button>
-    <div id="status"></div>
-    <div id="results"></div>
+    <div class="app">
+      <div class="top">
+        <div>
+          <div class="title">Facebook Scanner</div>
+          <div class="subtitle">Auto-scan, analyze, and post to backend</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <button id="scanBtn" class="scan-btn">Auto Scroll + Scan</button>
+        <div id="status" class="status"></div>
+      </div>
+
+      <div class="card">
+        <details>
+          <summary>Settings</summary>
+          <div class="settings-grid">
+            <div class="field">
+              <label for="baseUrlInput">Backend Base URL</label>
+              <input id="baseUrlInput" type="text" placeholder="http://localhost:8081" />
+            </div>
+            <div class="field">
+              <label for="pathInput">Backend Path</label>
+              <input id="pathInput" type="text" placeholder="/api/broker/process" />
+            </div>
+            <div class="actions">
+              <button id="saveSettingsBtn" class="btn primary" type="button">Save</button>
+              <button id="resetSettingsBtn" class="btn" type="button">Reset</button>
+            </div>
+            <div id="settingsStatus" class="muted"></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="card">
+        <div class="title" style="font-size: 13px">Backend Analysis</div>
+        <div id="summary" class="summary-grid"></div>
+        <div id="findings" class="findings"></div>
+      </div>
+
+      <div class="card">
+        <div class="title" style="font-size: 13px">Extracted Posts</div>
+        <div id="results" class="posts"></div>
+      </div>
+
+      <div class="card">
+        <details>
+          <summary>Payload Preview</summary>
+          <div class="json">
+            <pre id="jsonPreview"></pre>
+          </div>
+        </details>
+      </div>
+    </div>
 
     <script src="popup.js"></script>
   </body>
